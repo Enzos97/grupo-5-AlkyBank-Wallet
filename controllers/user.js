@@ -1,5 +1,6 @@
 const createHttpError = require('http-errors')
 const { User } = require('../database/models')
+const { ErrorObject } = require('../helpers/error')
 const { endpointResponse } = require('../helpers/success')
 const { catchAsync } = require('../helpers/catchAsync')
 const { genSaltSync, hashSync } = require('bcrypt')
@@ -52,4 +53,22 @@ module.exports = {
             next(httpError)
         }
     }),
+    userData: catchAsync(async (req, res, next) => {
+        try {
+            const { id } = req.params
+            const response = await User.findByPk(id)
+            if(!response) throw new ErrorObject('User not found.', 404)
+            endpointResponse({
+                res,
+                message: 'User data retrieved successfully',
+                body: response,
+            })
+        } catch (error) {
+            const httpError = createHttpError(
+                error.statusCode,
+                `[Error retrieving user data] - [user - GET]: ${error.message}`,
+            )
+            next(httpError)
+        }
+    })
 }
