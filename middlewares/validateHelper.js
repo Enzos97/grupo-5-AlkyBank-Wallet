@@ -1,15 +1,22 @@
-const { validationResult} = require("express-validator");
+const { validationResult , checkSchema } = require("express-validator");
 
-const {ErrorObject} = require("../helpers/error")
+const createHttpError = require('http-errors')
 
-const validateResult = (req,res,next)=>{
-    try {
+exports.schemaValidator = (schema) => [
+    checkSchema(schema),
+    (req, res, next) => {
+      try {
         validationResult(req).throw()
         return next()
-    } catch (error) {
-        res.status(403).send(new ErrorObject({errors : error.array()}, 403))
-    }
-}
+      } catch (error) {
+        const mappedErrors = error.mapped()
+        const errorMessages = Object.values(mappedErrors).map((error) => error.msg)
+        const httpError = createHttpError(
+          400,
+          `[Error on data validation] - [${(req.baseUrl).slice(1)} - ${req.method}]: ${errorMessages}`,
+        )
+        return next(httpError)
+      }
+    },
+  ]
 
-
-module.exports = {validateResult}
