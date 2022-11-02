@@ -25,17 +25,15 @@ module.exports = {
     }),
     createUser: catchAsync(async (req, res, next) => {
         try {
-            const { firstname, lastname, email, password } = req.body
-            if (!firstname || !lastname || !email || !password)
-                throw new Error('Not all fields have been entered.')
+            const { firstName, lastName, email, password } = req.body
             const existUser = await User.findOne({ where: { email } })
             if (existUser)
                 throw new Error('Email already exists.')
             const hashPassword = hashSync(password, genSaltSync(10))
             if(!hashPassword) throw new Error('Could not hash the password.')
             const response = await User.create({
-                firstName: firstname,
-                lastName: lastname,
+                firstName,
+                lastName,
                 password: hashPassword,
                 email,
             })
