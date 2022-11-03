@@ -10,7 +10,7 @@ const router = express.Router()
 router.get('/', get)
 
 router.get('/:id', userData)
-router.post('/', createUser)
+router.post('/', schemaValidator(register), createUser)
 
 
 module.exports = router
