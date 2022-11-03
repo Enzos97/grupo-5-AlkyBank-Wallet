@@ -15,11 +15,23 @@ module.exports = {
       amount: {
         type: Sequelize.DECIMAL
       },
-      UserId: {
-        type: Sequelize.INTEGER
+      userId: {
+        type: Sequelize.INTEGER,
+      //   references: {
+      //     model: 'Users',
+      //     key: 'id'
+      // },
+      //   onDelete:'CASCADE',
+      //   onUpdate:'CASCADE'
       },
-      CategoryId: {
-        type: Sequelize.INTEGER
+      categoryId: {
+        type: Sequelize.INTEGER,
+      //   references: {
+      //     model: 'Categories',
+      //     key: 'id'
+      // },
+      //   onDelete:'CASCADE',
+      //   onUpdate:'CASCADE'
       },
       date: {
         type: Sequelize.DATE

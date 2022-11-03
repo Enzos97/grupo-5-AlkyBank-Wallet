@@ -25,21 +25,19 @@ module.exports = {
     }),
     createUser: catchAsync(async (req, res, next) => {
         try {
-            const { firstname, lastname, email, password } = req.body
-            if (!firstname || !lastname || !email || !password)
-                throw new Error('Not all fields have been entered.')
+            const { firstName, lastName, email, password } = req.body
             const existUser = await User.findOne({ where: { email } })
             if (existUser)
-                throw new Error('Email already exists.')
+                throw new ErrorObject('User already exist.', 409)
             const hashPassword = hashSync(password, genSaltSync(10))
             if(!hashPassword) throw new Error('Could not hash the password.')
             const response = await User.create({
-                firstName: firstname,
-                lastName: lastname,
+                firstName,
+                lastName,
                 password: hashPassword,
                 email,
             })
-            if(!response) throw new Error('Could not create the user.')
+            if(!response) throw new ErrorObject('Could not create the user.', 500)
             endpointResponse({
                 res,
                 message: 'User created successfully',
