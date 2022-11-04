@@ -3,12 +3,15 @@ const createHttpError = require('http-errors')
 const { endpointResponse } = require('../helpers/success')
 
 const {Transaction} = require("../database/models")
+const { ErrorObject } = require('../helpers/error')
 
 module.exports = {
     getTransactions:catchAsync(async(req,res,next)=>{
         try {
-            console.log("HOLAAAAAAAAAAAAAAAAAAAAA")
             const response = await Transaction.findAll()
+            if(!response){
+                throw new ErrorObject("Cant do the action",500)
+            }
             endpointResponse({
                 res,
                 message:"Transactions retrieved successfully",
