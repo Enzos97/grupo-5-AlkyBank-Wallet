@@ -31,13 +31,14 @@ module.exports = (sequelize, DataTypes) => {
     UserId: DataTypes.INTEGER,
     CategoryId: DataTypes.INTEGER,
     date: DataTypes.DATE,
+    softDelete: DataTypes.DATE
 
   }, {
     sequelize,
     modelName: 'Transaction',
+    timestamps: true,
     paranoid: true,
     deletedAt: 'softDelete',
-    timestamps: true
   });
   return Transaction;
 };
