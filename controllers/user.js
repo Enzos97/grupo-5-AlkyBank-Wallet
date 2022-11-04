@@ -3,7 +3,7 @@ const { User } = require('../database/models')
 const { ErrorObject } = require('../helpers/error')
 const { endpointResponse } = require('../helpers/success')
 const { catchAsync } = require('../helpers/catchAsync')
-const { genSaltSync, hashSync } = require('bcrypt')
+const { genSaltSync, hashSync, compareSync } = require('bcrypt')
 
 // example of a controller. First call the service, then build the controller method
 module.exports = {
@@ -19,6 +19,28 @@ module.exports = {
             const httpError = createHttpError(
                 error.statusCode,
                 `[Error retrieving index] - [index - GET]: ${error.message}`,
+            )
+            next(httpError)
+        }
+    }),
+    login: catchAsync(async (req, res, next) => {
+        try {
+            const { email, password } = req.body
+            const response = await User.findOne({ where: { email } })
+            if (!response)
+                throw new ErrorObject('{ok: false}', 404)
+            const passwordMatch = compareSync(password, response.password)
+            if (!passwordMatch)
+                throw new ErrorObject('{ok: false}', 401)
+            endpointResponse({
+                res,
+                message: 'User logged successfully',
+                body: response,
+            })
+        } catch (error) {
+            const httpError = createHttpError(
+                error.statusCode,
+                `[Error logging in] - [login - POST]: ${error.message}`,
             )
             next(httpError)
         }
