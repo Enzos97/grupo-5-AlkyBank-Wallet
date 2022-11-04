@@ -21,8 +21,6 @@ module.exports = (sequelize, DataTypes) => {
         target_Key: 'CategoryId'
       })
 
-
-
     }
   };
   Transaction.init({
