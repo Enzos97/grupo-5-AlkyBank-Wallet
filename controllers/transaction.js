@@ -7,7 +7,7 @@ const { catchAsync } = require('../helpers/catchAsync')
 
 
 module.exports = {
-    createTransaction: catchAsync(async (req, res, next) => {
+      createTransaction: catchAsync(async (req, res, next) => {
         try {
             const {description, amount, userId, categoryId} = req.body
             const idUser = await User.findByPk(userId)
@@ -27,10 +27,28 @@ module.exports = {
             })
         } catch (error) {
             const httpError = createHttpError(
-                error.statusCode,
-                `[Error retrieving index] - [index - GET]: ${error.message}`,
+                error.statusCode,`[Error retrieving index] - [transaction - POST]: ${error.message}`,
             )
             next(httpError)
         }
     }),
+    getTransactions: catchAsync(async(req,res,next)=>{
+        try {
+            const response = await Transaction.findAll()
+            if(!response){
+                throw new ErrorObject("Cant do the action",500)
+            }
+            endpointResponse({
+                res,
+                message:"Transactions retrieved successfully",
+                body:response
+            })
+        }catch (error) {
+            const httpError = createHttpError(
+            error.statusCode,`[Error retrieving index] - [index - GET]: ${error.message}`,
+                `[Error retrieving index] - [transactions - GET]: ${error.message}`,
+            )
+            next(httpError)
+        }
+    })
 }
