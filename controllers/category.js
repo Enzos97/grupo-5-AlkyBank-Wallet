@@ -45,4 +45,52 @@ module.exports = {
             next(httpError)
         }
     }),
+
+    //Create Category
+    createCategory: catchAsync(async (req, res, next) => {
+        try {
+            const {name, description} = req.body
+            const response = await Category.create({
+                name,
+                description,
+            })
+            if(!response) throw new ErrorObject('Error Creating Category', 500)
+            endpointResponse({
+                res,
+                message: "Category created successfully",
+                body: response,
+            })
+        } catch (error) {
+            const httpError = createHttpError(
+                error.statusCode,
+                `[Error creating category] - [category - POST]: ${error.message}`,
+            )
+            next(httpError)
+        }
+    }),
+    //Edit Category
+    editCategory: catchAsync(async (req, res, next) => {
+        try {
+            const {id} = req.params
+            const {name, description} = req.body
+            const response = await Category.update({
+                name,
+                description
+            },{
+                where: {id: id}
+            });
+            // @ts-ignore
+            endpointResponse({
+                res,
+                message: "Category updated successfully",
+                body: response,
+            })
+        } catch (error) {
+            const httpError = createHttpError(
+                error.statusCode,
+                `[Error Updating Category] - [Category - PUT]: ${error.message}`,
+            )
+            next(httpError)
+        }
+    }),
 }
