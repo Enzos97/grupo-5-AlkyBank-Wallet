@@ -1,18 +1,29 @@
 const createHttpError = require('http-errors')
-const {  } = require('../database/models')
+const { Transaction, User, Category  } = require('../database/models')
 const { ErrorObject } = require('../helpers/error')
 const { endpointResponse } = require('../helpers/success')
 const { catchAsync } = require('../helpers/catchAsync')
 
+
+
 module.exports = {
-    post: catchAsync(async (req, res, next) => {
+    createTransaction: catchAsync(async (req, res, next) => {
         try {
-            const {description, amount, } = req.body;
-            const response = await User.findAll()
+            const {description, amount, userId, categoryId} = req.body
+            const idUser = await User.findByPk(userId)
+            const idCategory = await Category.findByPk(categoryId)
+            if(!idUser) throw new ErrorObject('invalid id user!')
+            if(!idCategory) throw new ErrorObject('invalid id Category!')
+            const newTransaction = await Transaction.create({
+                description,
+                amount,
+                userId:idUser.id,
+                categoryId:idCategory.id             
+            })
             endpointResponse({
                 res,
-                message: 'User retrieved successfully',
-                body: response,
+                message: 'transaction completed successfully',
+                body: newTransaction,
             })
         } catch (error) {
             const httpError = createHttpError(
