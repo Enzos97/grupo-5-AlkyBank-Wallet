@@ -30,14 +30,14 @@ module.exports = {
             if (existUser)
                 throw new ErrorObject('User already exist.', 409)
             const hashPassword = hashSync(password, genSaltSync(10))
-            if(!hashPassword) throw new Error('Could not hash the password.')
+            if (!hashPassword) throw new Error('Could not hash the password.')
             const response = await User.create({
                 firstName,
                 lastName,
                 password: hashPassword,
                 email,
             })
-            if(!response) throw new ErrorObject('Could not create the user.', 500)
+            if (!response) throw new ErrorObject('Could not create the user.', 500)
             endpointResponse({
                 res,
                 message: 'User created successfully',
@@ -55,10 +55,29 @@ module.exports = {
         try {
             const { id } = req.params
             const response = await User.findByPk(id)
-            if(!response) throw new ErrorObject('User not found.', 404)
+            if (!response) throw new ErrorObject('User not found.', 404)
             endpointResponse({
                 res,
                 message: 'User data retrieved successfully',
+                body: response,
+            })
+        } catch (error) {
+            const httpError = createHttpError(
+                error.statusCode,
+                `[Error retrieving user data] - [user - GET]: ${error.message}`,
+            )
+            next(httpError)
+        }
+    }),
+    deletedUser: catchAsync(async (req, res, next) => {
+        try {
+            const { id } = req.params
+            const response = await User.findByPk(id)
+            if (!response) throw new ErrorObject('the id doest not exist', 404)
+            await response.destroy()
+            endpointResponse({
+                res,
+                message: 'User eliminated retrieved successfully',
                 body: response,
             })
         } catch (error) {
