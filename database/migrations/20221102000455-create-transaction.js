@@ -39,6 +39,10 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
+      },
+      softDelete: {
+        allowNull: false,
+        type: Sequelize.DATE
       }
     });
   },

@@ -37,6 +37,7 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'Transaction',
     paranoid: true,
     deletedAt: 'softDelete',
+    timestamps: true
   });
   return Transaction;
 };
