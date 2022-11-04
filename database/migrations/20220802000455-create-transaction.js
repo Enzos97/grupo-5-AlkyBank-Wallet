@@ -17,21 +17,21 @@ module.exports = {
       },
       userId: {
         type: Sequelize.INTEGER,
-      //   references: {
-      //     model: 'Users',
-      //     key: 'id'
-      // },
-      //   onDelete:'CASCADE',
-      //   onUpdate:'CASCADE'
+        references: {
+          model: 'Users',
+          key: 'id'
+      },
+        onDelete:'CASCADE',
+        onUpdate:'CASCADE'
       },
       categoryId: {
         type: Sequelize.INTEGER,
-      //   references: {
-      //     model: 'Categories',
-      //     key: 'id'
-      // },
-      //   onDelete:'CASCADE',
-      //   onUpdate:'CASCADE'
+        references: {
+          model: 'Categories',
+          key: 'id'
+      },
+        onDelete:'CASCADE',
+        onUpdate:'CASCADE'
       },
       date: {
         type: Sequelize.DATE
