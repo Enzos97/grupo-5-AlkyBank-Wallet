@@ -27,11 +27,4 @@ exports.newTransaction = {
           options: { checkFalsy: true },
         },
     },
-    date: {
-        isDate: { errorMessage: 'dale must be a validate date' },
-        exists: {
-          errorMessage: 'date cannot be null',
-          options: { checkFalsy: true },
-        },
-      },
   }

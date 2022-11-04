@@ -9,7 +9,7 @@ const { catchAsync } = require('../helpers/catchAsync')
 module.exports = {
     createTransaction: catchAsync(async (req, res, next) => {
         try {
-            const {description, amount, userId, categoryId, date} = req.body
+            const {description, amount, userId, categoryId} = req.body
             const idUser = await User.findByPk(userId)
             const idCategory = await Category.findByPk(categoryId)
             if(!idUser) throw new ErrorObject('invalid id user!')
@@ -18,8 +18,7 @@ module.exports = {
                 description,
                 amount,
                 userId:idUser.id,
-                categoryId:idCategory.id,
-                date             
+                categoryId:idCategory.id             
             })
             endpointResponse({
                 res,
