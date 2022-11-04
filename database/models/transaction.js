@@ -30,10 +30,13 @@ module.exports = (sequelize, DataTypes) => {
     amount: DataTypes.DECIMAL,
     UserId: DataTypes.INTEGER,
     CategoryId: DataTypes.INTEGER,
-    date: DataTypes.DATE
+    date: DataTypes.DATE,
+
   }, {
     sequelize,
     modelName: 'Transaction',
+    paranoid: true,
+    deletedAt: 'softDelete',
   });
   return Transaction;
 };
