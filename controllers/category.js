@@ -45,6 +45,25 @@ module.exports = {
             next(httpError)
         }
     }),
+
+    //Create Category
+    createCategory: catchAsync(async (req, res, next) => {
+        try {
+            const {name, description} = req.body
+            const response = await Category.create({
+                name,
+                description,
+            })
+            if(!response) throw new ErrorObject('Error Creating Category', 500)
+            endpointResponse({
+                res,
+                message: "Category created successfully",
+                `[Error creating category] - [category - POST]: ${error.message}`,
+            )
+            next(httpError)
+        }
+    })
+    //Edit Category
     editCategory: catchAsync(async (req, res, next) => {
         try {
             const {id} = req.params
