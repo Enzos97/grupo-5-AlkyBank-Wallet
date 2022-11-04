@@ -58,11 +58,16 @@ module.exports = {
             endpointResponse({
                 res,
                 message: "Category created successfully",
+                body: response,
+            })
+        } catch (error) {
+            const httpError = createHttpError(
+                error.statusCode,
                 `[Error creating category] - [category - POST]: ${error.message}`,
             )
             next(httpError)
         }
-    })
+    }),
     //Edit Category
     editCategory: catchAsync(async (req, res, next) => {
         try {
