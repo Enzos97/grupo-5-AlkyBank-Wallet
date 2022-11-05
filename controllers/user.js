@@ -118,11 +118,9 @@ module.exports = {
             const { id } = req.params
             console.log(req.body)
             const { firstName, lastName, email,password} = req.body
-            const hashPassword = hashSync(password, genSaltSync(10))
-            const response = await User.Update({
+            const response = await User.update({
                 firstName,
                 lastName,
-                password: hashPassword,
                 email
             },
             {
