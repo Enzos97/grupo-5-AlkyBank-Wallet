@@ -2,7 +2,7 @@ const express = require('express')
 const { get, createUser, userData, deletedUser,editUser } = require('../controllers/user')
 
 const { schemaValidator } = require("../middlewares/validateHelper")
-const { register } = require("../schemas/UserRegister")
+const { register } = require("../schemas/users")
 
 const router = express.Router()
 
