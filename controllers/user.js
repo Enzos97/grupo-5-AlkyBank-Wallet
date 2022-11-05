@@ -116,8 +116,11 @@ module.exports = {
         try {
 
             const { id } = req.params
-            console.log(req.body)
+            const user = await User.findOne({ where: { id } })
+            if(!user) throw new ErrorObject('the user doest not exist', 404)
+
             const { firstName, lastName, email,password} = req.body
+
             const response = await User.update({
                 firstName,
                 lastName,
@@ -126,8 +129,6 @@ module.exports = {
             {
                 where: {id:id}
             })
-
-            if(!response) throw new ErrorObject('the user doest not exist', 404)
             endpointResponse({
                 res,
                 message: 'User updated successfully',
