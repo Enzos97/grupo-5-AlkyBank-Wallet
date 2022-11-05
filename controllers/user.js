@@ -25,6 +25,7 @@ module.exports = {
     }),
     createUser: catchAsync(async (req, res, next) => {
         try {
+            
             const { firstName, lastName, email, password } = req.body
             const existUser = await User.findOne({ where: { email } })
             if (existUser)
@@ -87,5 +88,37 @@ module.exports = {
             )
             next(httpError)
         }
-    })
+    }),
+
+    editUser: catchAsync(async (req, res, next) => {
+        try {
+
+            const { id } = req.params
+            console.log(req.body)
+            const { firstName, lastName, email,password} = req.body
+            const hashPassword = hashSync(password, genSaltSync(10))
+            const response = await User.Update({
+                firstName,
+                lastName,
+                password: hashPassword,
+                email
+            },
+            {
+                where: {id:id}
+            })
+
+            if(!response) throw new ErrorObject('the user doest not exist', 404)
+            endpointResponse({
+                res,
+                message: 'User updated successfully',
+                body: response,
+            })
+        } catch (error) {
+            const httpError = createHttpError(
+                error.statusCode,
+                `[Error retrieving user] - [user - PUT]: ${error.message}`,
+            )
+            next(httpError)
+        }
+    }),
 }
