@@ -31,3 +31,21 @@ exports.register = {
       errorMessage: 'weak password',
     },
   }
+
+exports.loginSchema = {
+    email: {
+        isEmail: { errorMessage: 'Invalid email' },
+        exists: {
+            errorMessage: 'Email cannot be null',
+            options: { checkFalsy: true },
+        },
+        isString: { errorMessage: 'Email is not a string' },
+    },
+    password: {
+        exists: {
+            errorMessage: 'Password cannot be null',
+            options: { checkFalsy: true },
+        },
+        isString: { errorMessage: 'Password is not a string' },
+    },
+}
