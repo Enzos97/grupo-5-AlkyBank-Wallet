@@ -1,7 +1,7 @@
 const express = require('express')
 const { createTransaction } = require('../controllers/transaction')
 const { schemaValidator } = require('../middlewares/validateHelper')
-const { newTransaction } = require('../schemas/transactionNew')
+const { newTransaction } = require('../schemas/transaction')
 
 const router = express.Router()
 
