@@ -75,4 +75,38 @@ module.exports = {
             next(httpError)
         }
     }),
+    updateTransaction:catchAsync(async(req,res,next)=>{
+        try {
+            const {id} = req.params
+            const {userId, category,amount,date} = req.body 
+
+            const transaction = await Transaction.findByPk(id);
+            const user = await User.findByPk(userId)
+
+            if(!transaction) throw new ErrorObject('Transaction not found.', 404)
+            if(!user) throw new ErrorObject('User  not found.', 404)
+    
+            const response = await Transaction.update({
+                userId,
+                category,
+                amount,
+                date: new Date(date)
+            },{
+                where: {id: id}
+            });
+            endpointResponse({
+                res,
+                message:"Transaction updated successfully",
+                body:response
+            })
+        } catch (error) {
+            const httpError = createHttpError(
+                error.statusCode,
+                `[Error retrieving index] - [index - PUT]: ${error.message}`,
+                `[Error retrieving index] - [transactions - PUT]: ${error.message}`,
+            )
+            next(httpError)
+        }
+    })
 }
+
