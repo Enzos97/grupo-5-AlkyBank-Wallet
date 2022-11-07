@@ -50,25 +50,5 @@ module.exports = {
             )
             next(httpError)
         }
-    }),
-    transactionData: catchAsync(async(req,res,next)=>{
-        try {
-
-            const id = req.params.id;
-            const response = await Transaction.findByPk(id)
-            if(!response){
-                throw new ErrorObject("The transaction does not exist",404)
-            }
-            endpointResponse({
-                res,
-                message:"Transaction retrieved successfully",
-                body:response
-            })
-        }catch (error) {
-            const httpError = createHttpError(
-            error.statusCode,`[Error retrieving transaction data] - [transaction - GET]: ${error.message}`,
-            )
-            next(httpError)
-        }
     })
 }
