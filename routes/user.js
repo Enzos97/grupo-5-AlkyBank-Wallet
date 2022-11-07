@@ -1,8 +1,8 @@
 const express = require('express')
-const { get, createUser, userData, deletedUser } = require('../controllers/user')
+const { get, createUser, userData, deletedUser,editUser } = require('../controllers/user')
 
 const { schemaValidator } = require("../middlewares/validateHelper")
-const { register } = require("../schemas/users")
+const { register,edit } = require("../schemas/users")
 
 const router = express.Router()
 
@@ -12,5 +12,6 @@ router.get('/', get)
 router.get('/:id', userData)
 router.post('/', schemaValidator(register), createUser)
 router.delete('/:id', deletedUser)
+router.put('/:id',schemaValidator(edit),editUser)
 
 module.exports = router
