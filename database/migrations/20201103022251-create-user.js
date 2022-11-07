@@ -29,6 +29,7 @@ module.exports = {
           model: 'Roles',
           key: 'id'
         },
+        defaultValue: 1,
         onDelete:'CASCADE',
         onUpdate:'CASCADE'
       },
@@ -38,6 +39,10 @@ module.exports = {
       },
       updatedAt: {
         allowNull: false,
+        type: Sequelize.DATE
+      },
+      deletedAt: {
+        allowNull: true,
         type: Sequelize.DATE
       }
     });

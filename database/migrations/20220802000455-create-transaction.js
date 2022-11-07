@@ -20,18 +20,18 @@ module.exports = {
         references: {
           model: 'Users',
           key: 'id'
-      },
-        onDelete:'CASCADE',
-        onUpdate:'CASCADE'
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
       },
       categoryId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'Categories',
           key: 'id'
-      },
-        onDelete:'CASCADE',
-        onUpdate:'CASCADE'
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
       },
       date: {
         type: Sequelize.DATE
@@ -42,6 +42,10 @@ module.exports = {
       },
       updatedAt: {
         allowNull: false,
+        type: Sequelize.DATE
+      },
+      softDelete: {
+        /*allowNull: false,*/
         type: Sequelize.DATE
       }
     });
