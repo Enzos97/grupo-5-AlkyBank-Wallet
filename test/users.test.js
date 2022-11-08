@@ -16,6 +16,12 @@ describe('TEST /users', () => {
         email: 'test@gmail.com',
         password: '%S!1Q%4V5kjW',
     }
+    const userToPut = {
+        firstName: 'Here',
+        lastName: 'Test!',
+        email: 'test@gmail.com',
+        password: '%S!1Q%4V5kjW',
+    }
 
     describe('GET /users', async () => {
         it('SUCCESS: should return all users (list)', async () => {
@@ -42,5 +48,35 @@ describe('TEST /users', () => {
             userId = response.body.body.id;
         });
     });
-
+    
+    describe('PUT /users', async () => {
+        it('SUCCESS: should update a user', async () => {
+            const response = await request(app).put(`/users/${userId}`).send(userToPut);
+            expect(response.status).to.equal(200);
+            expect(response.body).to.be.an('object');
+            expect(response.body.status).to.equal(true);
+            expect(response.body.code).to.equal(200);
+        });
+        it('FAIL: should return an error if a field is missing', async () => {
+            const response = await request(app).put(`/users/${userId}`).send({ firstName: 'Test' });
+            console.log(response.body);
+            expect(response.status).to.equal(400);
+            expect(response.body).to.be.an('object');
+        });
+        it('FAIL: should return an error if the user does not exist', async () => {
+            const response = await request(app).put('/users/1000').send(userToPut);
+            expect(response.status).to.equal(404);
+            expect(response.body).to.be.an('object');
+        });
+        it('FAIL: should return an error if a field is a invalid type', async () => {
+            const response = await request(app).put(`/users/${userId}`).send({ 
+                firstName: 10,
+                lastName: userToPut.lastName,
+                email: userToPut.email,
+                password: userToPut.password,
+            })
+            expect(response.status).to.equal(400);
+            expect(response.body).to.be.an('object');
+        });
+    });
 });
