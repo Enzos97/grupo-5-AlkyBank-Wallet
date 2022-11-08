@@ -53,16 +53,14 @@ describe('TEST /users', () => {
             expect(response.body).to.be.an('object');
         });
         it('FAIL: should return an error if the payload does not have a required field', async () => {
-            modifiedData = { ...userToCreate };
+            modifiedData = userToCreate;
             delete modifiedData.firstName;
             const response = await request(app).post('/users').send(modifiedData);
             expect(response.status).to.equal(400);
             expect(response.body).to.be.an('object');
         });
         it('FAIL: should return an error if a field is not a valid type', async () => {
-            modifiedData = { ...userToCreate };
-            modifiedData.firstName = 123;
-            const response = await request(app).post('/users').send(modifiedData);
+            const response = await request(app).post('/users').send({ ...userToCreate, firstName: 123 });
             expect(response.status).to.equal(400);
             expect(response.body).to.be.an('object');
         });
