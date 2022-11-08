@@ -8,6 +8,8 @@ module.exports = {
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     dialect: 'mysql',
+    jwtSecret: process.env.JWT_SECRET || 'Secret*/@',
+    jwtExpire: process.env.JWT_EXPIRE || '1h',
   },
 
   production: {
@@ -17,5 +19,7 @@ module.exports = {
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     dialect: 'mysql',
+    jwtSecret: process.env.JWT_SECRET || 'Secret*/@',
+    jwtExpire: process.env.JWT_EXPIRE || '1h',
   },
 }

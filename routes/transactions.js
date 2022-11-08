@@ -10,7 +10,7 @@ const router = express.Router()
 // example of a route with index controller get function
 router.post('/', createTransaction)
 router.get('/', getTransactions)
-router.put('/:id', schemaValidator(updateTransactionSchema), updateTransaction)
+router.put('/:id', schemaValidator(updateTransactionSchema),updateTransaction)
 router.delete('/:id', deleteTransaction)
 module.exports = router
 
