@@ -12,8 +12,8 @@ module.exports = {
             const { description, amount, userId, categoryId } = req.body
             const idUser = await User.findByPk(userId)
             const idCategory = await Category.findByPk(categoryId)
-            if(!idUser) throw new ErrorObject('invalid id user!',404)
-            if(!idCategory) throw new ErrorObject('invalid id Category!',404)
+            if (!idUser) throw new ErrorObject('invalid id user!', 404)
+            if (!idCategory) throw new ErrorObject('invalid id Category!', 404)
             const newTransaction = await Transaction.create({
                 description,
                 amount,
@@ -34,7 +34,40 @@ module.exports = {
     }),
     getTransactions: catchAsync(async (req, res, next) => {
         try {
-            const response = await Transaction.findAll()
+            const { size = 10, pag = 0 } = req.query
+            let options = {
+                limit: Number(size),
+                offset: Number(pag) * Number(size)
+            }
+            const response = await Transaction.findAndCountAll(options)
+            if (!response) {
+                throw new ErrorObject("Cant do the action", 500)
+            }
+            endpointResponse({
+                res,
+                message: "Transactions retrieved successfully",
+                body: response,
+                options: {
+                    next: `/transactions?pag=${Number(pag) + Number(1)}`,
+                    previous: `/transactions?pag=${Number(pag) === Number(0) ? pag : pag - 1}`
+                }
+            })
+        } catch (error) {
+            const httpError = createHttpError(
+                error.statusCode, `[Error retrieving index] - [index - GET]: ${error.message}`,
+                `[Error retrieving index] - [transactions - GET]: ${error.message}`,
+            )
+            next(httpError)
+        }
+    }),
+    getTransactionsQuery: catchAsync(async (req, res, next) => {
+        try {
+            const { idUser } = req.query
+            const { id } = req.user.id
+            let response;
+            if (id === parseInt(idUser) || req.user.roleId === 1) {
+                response = await Transaction.findAll({ where: { userId: idUser } })
+            }
             if (!response) {
                 throw new ErrorObject("Cant do the action", 500)
             }
@@ -51,50 +84,26 @@ module.exports = {
             next(httpError)
         }
     }),
-    getTransactionsQuery: catchAsync(async(req,res,next)=>{
+    transactionData: catchAsync(async (req, res, next) => {
         try {
-            const {idUser} = req.query
-            const {id} = req.user.id
-            let response;
-            if(id===parseInt(idUser) || req.user.roleId===1){
-                response = await Transaction.findAll({where:{userId:idUser}})
-            }
-            if(!response){
-                throw new ErrorObject("Cant do the action",500)
+            const id = req.params.id
+            const response = await Transaction.findByPk(id)
+            if (!response) {
+                throw new ErrorObject("transaction not found", 404)
             }
             endpointResponse({
                 res,
-                message:"Transactions retrieved successfully",
-                body:response
+                message: "Transaction retrieved successfully",
+                body: response
             })
-        }catch (error) {
+        } catch (error) {
             const httpError = createHttpError(
-            error.statusCode,`[Error retrieving index] - [index - GET]: ${error.message}`,
-                `[Error retrieving index] - [transactions - GET]: ${error.message}`,
+                error.statusCode, `[Error retrieving transaction] - [transactionData - GET]: ${error.message}`,
             )
             next(httpError)
         }
     }),
-    transactionData: catchAsync(async(req,res,next)=>{
-        try {
-            const id = req.params.id
-            const response = await Transaction.findByPk(id)
-            if(!response){
-                throw new ErrorObject("transaction not found",404)
-            }
-            endpointResponse({
-                res,
-                message:"Transaction retrieved successfully",
-                body:response
-            })
-        }catch (error) {
-            const httpError = createHttpError(
-            error.statusCode,`[Error retrieving transaction] - [transactionData - GET]: ${error.message}`,
-         )
-            next(httpError)
-        }
-    }),
-    updateTransaction:catchAsync(async(req,res,next)=>{
+    updateTransaction: catchAsync(async (req, res, next) => {
         try {
             const { id } = req.params
             const { userId, category, amount, date } = req.body
@@ -102,9 +111,9 @@ module.exports = {
             const transaction = await Transaction.findByPk(id);
             const user = await User.findByPk(userId)
 
-            if(!transaction) throw new ErrorObject('Transaction not found.', 404)
-            if(!user) throw new ErrorObject('User  not found.', 404)
-    
+            if (!transaction) throw new ErrorObject('Transaction not found.', 404)
+            if (!user) throw new ErrorObject('User  not found.', 404)
+
             const response = await Transaction.update({
                 userId,
                 category,
