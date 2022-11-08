@@ -79,4 +79,14 @@ describe('TEST /users', () => {
             expect(response.body).to.be.an('object');
         });
     });
+
+    describe('DELETE /users', async () => {
+        it('SUCCESS: should delete the user', async () => {
+            const response = await request(app).delete(`/users/${userId}`);
+            expect(response.status).to.equal(200);
+            expect(response.body).to.be.an('object');
+            expect(response.body.status).to.equal(true);
+            expect(response.body.code).to.equal(200);
+        });
+    });
 });
