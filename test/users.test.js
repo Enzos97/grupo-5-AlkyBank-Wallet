@@ -47,6 +47,25 @@ describe('TEST /users', () => {
             expect(response.body.code).to.equal(200);
             userId = response.body.body.id;
         });
+        it('FAIL: should return an error if the user already exists', async () => {
+            const response = await request(app).post('/users').send(userToCreate);
+            expect(response.status).to.equal(409);
+            expect(response.body).to.be.an('object');
+        });
+        it('FAIL: should return an error if the payload does not have a required field', async () => {
+            modifiedData = { ...userToCreate };
+            delete modifiedData.firstName;
+            const response = await request(app).post('/users').send(modifiedData);
+            expect(response.status).to.equal(400);
+            expect(response.body).to.be.an('object');
+        });
+        it('FAIL: should return an error if a field is not a valid type', async () => {
+            modifiedData = { ...userToCreate };
+            modifiedData.firstName = 123;
+            const response = await request(app).post('/users').send(modifiedData);
+            expect(response.status).to.equal(400);
+            expect(response.body).to.be.an('object');
+        });
     });
     
     describe('PUT /users', async () => {
