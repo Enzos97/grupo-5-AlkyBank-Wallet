@@ -20,6 +20,6 @@ module.exports = {
     port: process.env.DB_PORT,
     dialect: 'mysql',
     jwtSecret: process.env.JWT_SECRET || 'Secret*/@',
-    jwtExpire: process.env.JWT_EXPIRE || '1h',
+    jwtExpire: process.env.JWT_EXPIRE || '7d',
   },
 }

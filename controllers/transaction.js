@@ -34,6 +34,7 @@ module.exports = {
     }),
     getTransactions: catchAsync(async (req, res, next) => {
         try {
+            console.log(6)
             const response = await Transaction.findAll()
             if (!response) {
                 throw new ErrorObject("Cant do the action", 500)

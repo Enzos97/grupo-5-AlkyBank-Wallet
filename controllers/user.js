@@ -4,6 +4,7 @@ const { ErrorObject } = require('../helpers/error')
 const { endpointResponse } = require('../helpers/success')
 const { catchAsync } = require('../helpers/catchAsync')
 const { genSaltSync, hashSync, compareSync } = require('bcrypt')
+const { encode } = require('../helpers/jwt')
 
 // example of a controller. First call the service, then build the controller method
 module.exports = {
@@ -27,15 +28,14 @@ module.exports = {
         try {
             const { email, password } = req.body
             const response = await User.findOne({ where: { email } })
-            if (!response)
-                throw new ErrorObject('{ok: false}', 404)
+            if (!response)throw new ErrorObject('{ok: false}', 404)
             const passwordMatch = compareSync(password, response.password)
-            if (!passwordMatch)
-                throw new ErrorObject('{ok: false}', 401)
+            if (!passwordMatch)throw new ErrorObject('{ok: false}', 401)
+            const token = encode(response,'user')
             endpointResponse({
                 res,
                 message: 'User logged successfully',
-                body: response,
+                body: {response,token},
             })
         } catch (error) {
             const httpError = createHttpError(
