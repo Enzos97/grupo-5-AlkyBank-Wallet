@@ -93,4 +93,25 @@ module.exports = {
             next(httpError)
         }
     }),
+    //Delete Category
+    deleteCategory: catchAsync(async(req,res,next)=>{
+        try {
+            const {id} = req.params
+            const response = await Category.destroy({where : {id}})
+            if(!response){
+                throw new ErrorObject("The id does not exit",500)
+            }
+            endpointResponse({
+                res,
+                message: "Category deleted successfully",
+                body: response
+            })
+        } catch (error) {
+            const httpError = createHttpError(
+                error.statusCode,
+                `[Error deleting Category] - [Category - DELETE]: ${error.message}`,
+            )
+            next(httpError)
+        }
+    })
 }
