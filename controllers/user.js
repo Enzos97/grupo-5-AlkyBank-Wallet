@@ -49,7 +49,7 @@ module.exports = {
     }),
     createUser: catchAsync(async (req, res, next) => {
         try {
-
+            
             const { firstName, lastName, email, password } = req.body
             const existUser = await User.findOne({ where: { email } })
             if (existUser)
@@ -61,6 +61,7 @@ module.exports = {
                 lastName,
                 password: hashPassword,
                 email,
+                avatar:"http://localhost:3001/uploads/" + req.file?.originalname
             })
             if (!response) throw new ErrorObject('Could not create the user.', 500)
             endpointResponse({
@@ -144,3 +145,4 @@ module.exports = {
         }
     }),
 }
+ 
