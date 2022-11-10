@@ -3,6 +3,7 @@ const { get, createUser, userData, deletedUser,editUser } = require('../controll
 
 const { schemaValidator } = require("../middlewares/validateHelper")
 const { register,edit } = require("../schemas/users")
+const {uploadImage} = require("../middlewares/multer")
 
 const router = express.Router()
 
@@ -10,7 +11,7 @@ const router = express.Router()
 router.get('/', get)
 
 router.get('/:id', userData)
-router.post('/', schemaValidator(register), createUser)
+router.post('/',uploadImage,schemaValidator(register), createUser)
 router.delete('/:id', deletedUser)
 router.put('/:id',schemaValidator(edit),editUser)
 
