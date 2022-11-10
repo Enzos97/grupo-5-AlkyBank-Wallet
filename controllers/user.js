@@ -10,11 +10,13 @@ const { encode } = require('../helpers/jwt')
 module.exports = {
     get: catchAsync(async (req, res, next) => {
         try {
-            const response = await User.findAll()
+            const response = await User.findAll({
+                attributes: ['firstName', 'lastName', 'email', 'createdAt']
+            })
             endpointResponse({
                 res,
                 message: 'User retrieved successfully',
-                body: response,
+                body: response
             })
         } catch (error) {
             const httpError = createHttpError(
