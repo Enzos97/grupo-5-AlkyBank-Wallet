@@ -9,11 +9,13 @@ const { genSaltSync, hashSync, compareSync } = require('bcrypt')
 module.exports = {
     get: catchAsync(async (req, res, next) => {
         try {
-            const response = await User.findAll()
+            const response = await User.findAll({
+                attributes: ['firstName', 'lastName', 'email', 'createdAt']
+            })
             endpointResponse({
                 res,
                 message: 'User retrieved successfully',
-                body: response,
+                body: response
             })
         } catch (error) {
             const httpError = createHttpError(
@@ -47,7 +49,7 @@ module.exports = {
     }),
     createUser: catchAsync(async (req, res, next) => {
         try {
-            
+
             const { firstName, lastName, email, password } = req.body
             const existUser = await User.findOne({ where: { email } })
             if (existUser)
@@ -95,9 +97,8 @@ module.exports = {
     deletedUser: catchAsync(async (req, res, next) => {
         try {
             const { id } = req.params
-            const response = await User.findByPk(id)
+            const response = await User.destroy({ where: { id: id } })
             if (!response) throw new ErrorObject('the id doest not exist', 404)
-            await response.destroy()
             endpointResponse({
                 res,
                 message: 'User eliminated retrieved successfully',
@@ -117,18 +118,18 @@ module.exports = {
 
             const { id } = req.params
             const user = await User.findOne({ where: { id } })
-            if(!user) throw new ErrorObject('the user doest not exist', 404)
+            if (!user) throw new ErrorObject('the user doest not exist', 404)
 
-            const { firstName, lastName, email,password} = req.body
+            const { firstName, lastName, email, password } = req.body
 
             const response = await User.update({
                 firstName,
                 lastName,
                 email
             },
-            {
-                where: {id:id}
-            })
+                {
+                    where: { id: id }
+                })
             endpointResponse({
                 res,
                 message: 'User updated successfully',

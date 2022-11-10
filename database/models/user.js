@@ -26,12 +26,13 @@ module.exports = (sequelize, DataTypes) => {
     password: DataTypes.STRING,
     avatar: DataTypes.STRING,
     roleId: DataTypes.INTEGER,
-    deletedAt: DataTypes.DATE
+    softDelete: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'User',
     timestamps: true,
     paranoid: true,
+    deletedAt: 'softDelete'
   });
   return User;
 };
