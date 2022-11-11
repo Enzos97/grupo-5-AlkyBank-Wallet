@@ -61,7 +61,9 @@ module.exports = {
                 lastName,
                 password: hashPassword,
                 email,
-                avatar:"http://localhost:3001/uploads/" + req.file?.originalname
+                avatar:`${req.protocol}://${req.get('host')}/uploads/` +  req.file?.originalname
+                // `${req.protocol}://${req.get('host')}${req.originalUrl}` +
+                //"http://localhost:3001/uploads/"
             })
             if (!response) throw new ErrorObject('Could not create the user.', 500)
             endpointResponse({
