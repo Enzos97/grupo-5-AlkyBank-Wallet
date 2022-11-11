@@ -11,12 +11,12 @@ const { updateTransactionSchema, newTransaction } = require("../schemas/transact
 const router = express.Router()
 
 // example of a route with index controller get function
-router.get('/', getTransactions)
-router.get('/:id', transactionData)
+router.get('/', auth, getTransactions)
+router.get('/:id', auth, transactionData)
 router.get('/', auth, isOwnership, getTransactionsQuery)
-router.post('/', schemaValidator(newTransaction), createTransaction)
-router.put('/:id',schemaValidator(updateTransactionSchema),updateTransaction)
-router.delete('/:id', deleteTransaction)
+router.post('/', auth, schemaValidator(newTransaction), createTransaction)
+router.put('/:id', auth,schemaValidator(updateTransactionSchema),updateTransaction)
+router.delete('/:id', auth, deleteTransaction)
 
 module.exports = router
 
