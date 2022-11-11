@@ -1,7 +1,7 @@
 // required modules
+const path = require('path')
 const request = require('supertest');
 const expect = require('chai').expect;
-// const { User } = require('../database/models');
 
 // setting up the server
 const app = require('../app');
@@ -10,6 +10,7 @@ const app = require('../app');
 describe('TEST /users', () => {
 
     let userId;
+    const imagePath = path.join(__dirname, '/resources/cat.jpg')
     const userToCreate = {
         firstName: 'Test',
         lastName: 'Here!',
@@ -25,7 +26,7 @@ describe('TEST /users', () => {
 
     describe('GET /users', async () => {
         it('SUCCESS: should return all users (list)', async () => {
-            const response = await request(app).get('/users');
+            const response = await request(app).get('/users')
             expect(response.status).to.equal(200);
             expect(response.body).to.be.an('object');
             expect(response.body.status).to.equal(true);
@@ -40,7 +41,12 @@ describe('TEST /users', () => {
 
     describe('POST /users', async () => {
         it('SUCCESS: should create a new user', async () => {
-            const response = await request(app).post('/users').send(userToCreate);
+            const response = await request(app).post('/users')
+                .field('firstName', userToCreate.firstName)
+                .field('lastName', userToCreate.lastName)
+                .field('email', userToCreate.email)
+                .field('password', userToCreate.password)
+                .attach('avatar', imagePath)
             expect(response.status).to.equal(200);
             expect(response.body).to.be.an('object');
             expect(response.body.status).to.equal(true);
@@ -48,7 +54,12 @@ describe('TEST /users', () => {
             userId = response.body.body.id;
         });
         it('FAIL: should return an error if the user already exists', async () => {
-            const response = await request(app).post('/users').send(userToCreate);
+            const response = await request(app).post('/users')
+                .field('firstName', userToCreate.firstName)
+                .field('lastName', userToCreate.lastName)
+                .field('email', userToCreate.email)
+                .field('password', userToCreate.password)
+                .attach('avatar', imagePath)
             expect(response.status).to.equal(409);
             expect(response.body).to.be.an('object');
         });
@@ -96,7 +107,7 @@ describe('TEST /users', () => {
             expect(response.body).to.be.an('object');
         });
     });
-
+    
     describe('DELETE /users', async () => {
         it('SUCCESS: should delete the user', async () => {
             const response = await request(app).delete(`/users/${userId}`);
