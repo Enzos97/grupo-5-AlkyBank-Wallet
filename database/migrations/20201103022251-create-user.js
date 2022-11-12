@@ -29,7 +29,7 @@ module.exports = {
           model: 'Roles',
           key: 'id'
         },
-        defaultValue: 1,
+        defaultValue: 2,
         onDelete:'CASCADE',
         onUpdate:'CASCADE'
       },
