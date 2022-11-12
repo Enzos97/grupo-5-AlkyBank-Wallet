@@ -5,7 +5,7 @@ const options = {
         info: {
             title: "AlkyBank Wallet",
             version: "1.0.0",
-            description:"Una api para el challenge de alkemy"
+            description:"Referencia de la API para la Wallet de AlkyBank"
         },
         servers:[
             {
@@ -14,7 +14,7 @@ const options = {
         ],
       
     },
-    apis: ["./src/routes/*.js"]
+    apis: ["./routes/*.js"]
 }
 
 module.exports = options
