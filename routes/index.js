@@ -14,6 +14,6 @@ router.get('/', get)
 router.use('/categories',categoryRouter)
 router.use('/users', userRouter)
 router.use('/auth', authRouter)
-router.use('/transactions',transactionRouter)
+router.use('/transaction',transactionRouter)
 
 module.exports = router
