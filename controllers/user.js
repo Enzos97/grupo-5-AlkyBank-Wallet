@@ -14,7 +14,12 @@ module.exports = {
             const response = await User.findAll({
                 attributes: ['firstName', 'lastName', 'email', 'createdAt']
             })
-            let results =  usersPagination(response, parseInt(req.query.page), 10)
+            let results
+            if(!req.query.page){
+                results =  usersPagination(response, 1, 10)
+            }else{
+                results =  usersPagination(response, parseInt(req.query.page), 10)
+            }
             endpointResponse({
                 res,
                 message: 'User retrieved successfully',
@@ -84,7 +89,9 @@ module.exports = {
     userData: catchAsync(async (req, res, next) => {
         try {
             const { id } = req.params
-            const response = await User.findByPk(id)
+            const response = await User.findByPk(id, {
+                attributes: ['firstName', 'lastName', 'email', 'roleId', 'avatar', 'createdAt']
+            })
             if (!response) throw new ErrorObject('User not found.', 404)
             endpointResponse({
                 res,
