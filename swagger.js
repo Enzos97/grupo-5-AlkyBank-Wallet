@@ -9,7 +9,7 @@ const options = {
         },
         servers:[
             {
-                url:`http://localhost:3002`,
+                url:`http://localhost:${process.env.PORT}`,
                 description: "Internal Server"
             }
         ],
