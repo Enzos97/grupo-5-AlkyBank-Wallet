@@ -5,16 +5,17 @@ const options = {
         info: {
             title: "AlkyBank Wallet",
             version: "1.0.0",
-            description:"Una api para el challenge de alkemy"
+            description:"Referencia de la API para la Wallet de AlkyBank"
         },
         servers:[
             {
-                url:`http://localhost:3001`
+                url:`http://localhost:3001`,
+                description: "Internal Server"
             }
         ],
       
     },
-    apis: ["./src/routes/*.js"]
+    apis: ["./routes/*.js"]
 }
 
 module.exports = options
