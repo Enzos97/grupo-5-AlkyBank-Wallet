@@ -11,8 +11,6 @@ const router = express.Router()
 // example of a route with index controller get function
 
 
-// example of a route with index controller get function
-
 /**
  * @swagger
  * components:
@@ -76,17 +74,25 @@ const router = express.Router()
  *      required: true
  *      schema:
  *       type: string
- *      description: User id         
+ *      description: User id
+ *    PageId:
+ *      in: query
+ *      name: page
+ *      schema: 
+ *        type: number
+ *      description: Page number         
  *
  */
 
 
  /**
  * @swagger
- * /users?page=1:
+ * /users/:
  *   get:
  *     summary: Returns the list of all the users
  *     tags: [Users]
+ *     parameters:
+ *      - $ref: '#/components/parameters/PageId'
  *     responses:
  *       200:
  *         description: The list of the Users

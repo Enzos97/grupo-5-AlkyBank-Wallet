@@ -69,7 +69,7 @@ const router = express.Router()
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/AuthResponse'
+ *              $ref: '#/components/schemas/authResponse'
  *      500:
  *        description: Some server error
  *
