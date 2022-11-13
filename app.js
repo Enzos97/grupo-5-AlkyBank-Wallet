@@ -12,9 +12,9 @@ const swaggerJsDocs= require("swagger-jsdoc")
 const options = require('./swagger.js')
 
 const indexRouter = require('./routes/index')
-
+//ESTO ES UNA PRUEBA
 const specs = swaggerJsDocs(options)
-const port = process.env.PORT || 3001
+const port = process.env.PORT || 3002
 
 const app = express()
 app.use(cors())
