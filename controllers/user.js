@@ -12,7 +12,7 @@ module.exports = {
     get: catchAsync(async (req, res, next) => {
         try {
             const response = await User.findAll({
-                attributes: ['firstName', 'lastName', 'email', 'createdAt']
+                attributes: ['id', 'firstName', 'lastName', 'email', 'createdAt']
             })
             let results
             if(!req.query.page){
@@ -90,7 +90,7 @@ module.exports = {
         try {
             const { id } = req.params
             const response = await User.findByPk(id, {
-                attributes: ['firstName', 'lastName', 'email', 'roleId', 'avatar', 'createdAt']
+                attributes: ['id', 'firstName', 'lastName', 'email', 'roleId', 'avatar', 'createdAt']
             })
             if (!response) throw new ErrorObject('User not found.', 404)
             endpointResponse({
