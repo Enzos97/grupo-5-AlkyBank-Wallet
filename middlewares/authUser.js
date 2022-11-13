@@ -1,7 +1,6 @@
 const {ErrorObject} = require("../helpers/error")
-const {verify, decode} = require("../helpers/jwt")
+const {decode} = require("../helpers/jwt")
 const { User } = require('../database/models')
-const { INTEGER } = require("sequelize")
 
 module.exports={
     auth : async (req,res,next)=>{
