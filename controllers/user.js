@@ -14,7 +14,12 @@ module.exports = {
             const response = await User.findAll({
                 attributes: ['firstName', 'lastName', 'email', 'createdAt']
             })
-            let results =  usersPagination(response, parseInt(req.query.page), 10)
+            let results
+            if(!req.query.page){
+                results =  usersPagination(response, 1, 10)
+            }else{
+                results =  usersPagination(response, parseInt(req.query.page), 10)
+            }
             endpointResponse({
                 res,
                 message: 'User retrieved successfully',
