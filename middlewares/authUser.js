@@ -8,7 +8,7 @@ module.exports={
         let token = req.headers.authorization.split(" ")[1]
         if(!token)throw new ErroObject('No token', 400)
         let userToken = decode(token)
-        let user = await User.findOne({ where: { id:userToken.id } })
+        let user = await User.findOne({ where: { id:userToken.user.id } })
         if(user){
             req.user = user
             next()
