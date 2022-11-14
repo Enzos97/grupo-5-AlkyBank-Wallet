@@ -167,6 +167,14 @@ router.post('/', uploadImage,schemaValidator(register),createUser)
  *      - bearerAuth: []
  *     summary: Edit an user's info
  *     tags: [Users]
+ *     parameters:
+ *      - $ref: '#/components/parameters/UserId'
+ *     requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/User'
  *     responses:
  *       200:
  *         description: Edit an user's info
